@@ -1,0 +1,2 @@
+# sequelize-airtight
+sequelize-airtight
