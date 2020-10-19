@@ -1,0 +1,73 @@
+{
+  "name": "sequelize-airtight",
+  "description": "Make your Sequelize models foolproof with extensive validation checks, setters and getters.",
+  "keywords": [
+    "sequelize",
+    "validation",
+    "setters",
+    "getters",
+    "mutators"
+  ],
+  "author": "Alex Parra <alexpds@gmail.com>",
+  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "https://github.com/alex-parra/sequelize-airtight#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-parra/sequelize-airtight.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alex-parra/sequelize-airtight/issues"
+  },
+  "maintainers": [
+    "Alex Parra <alexpds@gmail.com>"
+  ],
+  "main": "lib/index",
+  "types": "lib/index",
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": ">=10.3.0"
+  },
+  "module": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "mocha 'test/**/*.spec.js'",
+    "lint": "eslint --ext .js,.ts --quiet --fix src/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.11.10",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.13.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "express": "^4.17.1",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.2",
+    "mocha": "^8.2.0",
+    "pg": "^8.4.1",
+    "prettier": "^2.1.2",
+    "sequelize": "^6.3.5",
+    "typescript": "^4.0.3"
+  },
+  "peerDependencies": {
+    "sequelize": "^6.3.5"
+  }
+}
