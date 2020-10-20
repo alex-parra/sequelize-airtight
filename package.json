@@ -33,8 +33,7 @@
   "module": "commonjs",
   "scripts": {
     "build": "tsc",
-    "pretest": "npm run build",
-    "test": "mocha 'test/**/*.spec.js'",
+    "test": "mocha",
     "lint": "eslint --ext .js,.ts --quiet --fix src/"
   },
   "husky": {
