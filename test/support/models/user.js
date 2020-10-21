@@ -16,16 +16,12 @@ const options = {
   timestamps: true,
 };
 
-let UserModel;
-
 module.exports = {
   load: (sequelize) => {
-    UserModel = sequelize.define('User', attributes, options);
-    UserModel.associate = (models) => {
+    const User = sequelize.define('User', attributes, options);
+    User.associate = (models) => {
       // pass
     };
-    return UserModel;
+    return User;
   },
-
-  UserModel,
 };
