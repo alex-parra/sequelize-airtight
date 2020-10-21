@@ -12,6 +12,9 @@ const init = (sequelize: Sequelize): void => {
   });
 };
 
-const airtight: Airtight_Export = { default: init, init };
+const airtight: Airtight_Export = {
+  default: init,
+  init,
+};
 
 export = airtight;

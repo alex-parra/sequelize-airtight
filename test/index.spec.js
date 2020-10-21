@@ -1,19 +1,18 @@
 const expect = require('chai').expect;
+const { Sequelize } = require('sequelize');
 
-const { init, dbReset } = require('./support/app');
+const { d, init } = require('./support');
 
-describe('sequelize init', () => {
-  afterEach(dbReset);
+describe(d('Sequelize setup'), () => {
+  it('connected, synced and models loaded', async () => {
+    const { db, models } = await init();
+    expect(db).to.be.instanceOf(Sequelize);
+    expect(models).to.equal(db.models);
+  });
 
-  it('db is synced and models work', async () => {
+  it('Model User works', async () => {
     const { models } = await init();
     const resEmpty = await models.User.findAll();
     expect(resEmpty).to.be.an('array').with.lengthOf(0);
-
-    const user = await models.User.create({ email: 'alex.parra@test.dev' });
-    expect(user.email).to.equal('alex.parra@test.dev');
-
-    const resOne = await models.User.findAll();
-    expect(resOne).to.be.an('array').with.lengthOf(1);
   });
 });

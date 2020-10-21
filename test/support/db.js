@@ -14,6 +14,12 @@ const defaults = {
 };
 
 module.exports = {
+  /**
+   * - Initialize DB connection
+   * - Load models
+   * - Sync Database with models
+   * @returns {Sequelize} The sequelize instance
+   */
   init: async (options) => {
     sequelize = new Sequelize({ ...defaults, ...options });
     loadModels(sequelize);

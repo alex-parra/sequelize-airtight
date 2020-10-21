@@ -7,7 +7,7 @@ const attributes = {
   name: {
     type: DataTypes.STRING,
   },
-  date_of_birth: {
+  dateOfBirth: {
     type: DataTypes.DATE,
   },
 };

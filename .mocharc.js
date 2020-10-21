@@ -7,4 +7,5 @@ module.exports = {
   colors: true,
   bail: true,
   exit: true,
+  require: ['test/support/hooks.js'],
 };
