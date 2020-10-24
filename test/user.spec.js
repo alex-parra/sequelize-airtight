@@ -10,8 +10,6 @@ describe(d('User Model'), () => {
     const user = await models.User.create(testUserData);
     expect(user.id).to.be.a('number').greaterThan(0);
     expect(user.email).to.equal(testUserData.email);
-    expect(user.createdAt).to.be.a('Date');
-    expect(user.updatedAt).to.be.a('Date');
     const resOne = await models.User.findAll();
     expect(resOne).to.be.an('array').with.lengthOf(1);
   });
@@ -268,6 +266,16 @@ describe(d('User Model'), () => {
       const user1 = await models.User.create({ ...testUserData, dateOfBirth });
       expect(user1.id).to.be.a('number').greaterThan(0);
       expect(user1.dateOfBirth).to.be.a('Date');
+    });
+  });
+
+  // timestamps
+  describe('field validation: timestamps', () => {
+    it('has createdAt and updatedAt', async () => {
+      const { models } = await init();
+      const actual = await models.User.create(testUserData);
+      expect(actual.createdAt).to.be.a('Date');
+      expect(actual.updatedAt).to.be.a('Date');
     });
   });
 });
