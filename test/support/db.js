@@ -8,6 +8,7 @@ const defaults = {
   host: '127.0.0.1',
   port: 5432,
   logging: false,
+  typeValidation: false, // default. Set to `true` to prevent some type issues
   define: {
     underscored: true,
   },

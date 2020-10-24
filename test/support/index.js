@@ -26,7 +26,7 @@ const app = {
    * Truncate all database tables
    * @returns {Promise} void
    */
-  dbReset: async () => app.db.truncate(),
+  dbReset: async () => app.db.truncate({ cascade: true }),
 };
 
 /**

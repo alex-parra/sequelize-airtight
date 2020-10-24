@@ -5,7 +5,7 @@ const path = require('path');
 const models = fs.readdirSync(__dirname).reduce((acc, file) => {
   const fileName = path.basename(file, '.js');
   if (['index'].includes(fileName)) return acc;
-  return { ...acc, fileName: require(`./${file}`) };
+  return { ...acc, [fileName]: require(`./${file}`) };
 }, {});
 
 /**
