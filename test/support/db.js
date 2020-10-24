@@ -24,7 +24,7 @@ module.exports = {
   init: async (options) => {
     sequelize = new Sequelize({ ...defaults, ...options });
     loadModels(sequelize);
-    await sequelize.sync();
+    await sequelize.sync({ force: true });
     return sequelize;
   },
 };
