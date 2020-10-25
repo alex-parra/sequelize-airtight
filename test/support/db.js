@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const loadModels = require('./models');
 
+const airtight = require('sequelize-airtight');
+
 let sequelize;
 
 const defaults = {
@@ -23,6 +25,10 @@ module.exports = {
    */
   init: async (options) => {
     sequelize = new Sequelize({ ...defaults, ...options });
+
+    // Init Airtight into sequelize. Must be called before loading models
+    airtight.init(sequelize);
+
     loadModels(sequelize);
     await sequelize.sync({ force: true });
     return sequelize;

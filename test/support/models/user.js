@@ -7,10 +7,29 @@ const attributes = {
     allowNull: false,
     validate: { isEmail: true },
   },
+  emailAirtight: {
+    type: DataTypes.STRING(255),
+    unique: true,
+    allowNull: true,
+    validate: { isEmail: true },
+    airtight: {
+      v8n: { isType: 'string' },
+      set: { trim: true },
+    },
+  },
   name: {
     type: DataTypes.STRING(255),
     allowNull: true,
     validate: { len: [1, 255] },
+  },
+  nameAirtight: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    validate: { len: [1, 255] },
+    airtight: {
+      v8n: { isType: 'string' },
+      set: { trim: true },
+    },
   },
   dateOfBirth: {
     type: DataTypes.DATE,

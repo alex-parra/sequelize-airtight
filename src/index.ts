@@ -1,20 +1,22 @@
 import type { Sequelize } from 'sequelize';
+import type Airtight from './airtight';
+import { beforeDefine, afterDefine } from './hooks';
 
-interface Airtight_Export {
-  default: (sequelize: Sequelize) => void;
-  init: (sequelize: Sequelize) => void;
-}
-
+/**
+ * Init Airtight into sequelize.
+ * - must be called before loading models
+ *
+ * @param {Sequelize} sequelize The sequelize instance
+ * @returns void
+ */
 const init = (sequelize: Sequelize): void => {
-  console.log('AIRTIGHT-init');
-  sequelize.addHook('beforeDefine', () => {
-    console.log('AIRTIGHT-beforeDefine');
-  });
+  sequelize.addHook('beforeDefine', beforeDefine);
+  sequelize.addHook('afterDefine', afterDefine);
 };
 
-const airtight: Airtight_Export = {
+const airtightExport: Airtight.Export = {
   default: init,
-  init,
+  init: init,
 };
 
-export = airtight;
+export = airtightExport;
