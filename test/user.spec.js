@@ -201,8 +201,12 @@ describe(d('User Model'), () => {
       expect(user.name).to.equal(`${name}`); // it's just converted to string
     });
 
-    // Fixable with `typeValidation: true` on sequelize init
-    it('accepts a boolean (!)', async () => {
+    /**
+     * If the field is STRING only `string` should be allowed
+     * Airtight allows preventing this
+     * - `typeValidation: true` on sequelize init also prevents this
+     */
+    it('accepts a boolean (!)*', async () => {
       const { models } = await init();
       const name = true; // Even if someone is named `true` it should be a string
       const user = await models.User.create({ ...testUserData, name });
