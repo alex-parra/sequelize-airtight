@@ -52,7 +52,7 @@ describe(d('Host Model'), () => {
      */
     it('allows setting id on new instance (!)', async () => {
       const { models } = await init();
-      const host = await models.Host.create({ ...testHostData, id: 123 });
+      const host = await models.Host.create({ ...testHostData, id: 123 }, { include: 'User' });
       expect(host.id).to.equal(123);
     });
 
@@ -62,7 +62,7 @@ describe(d('Host Model'), () => {
      */
     it('does not update id on an existing instance', async () => {
       const { models } = await init();
-      const host = await models.Host.create(testHostData);
+      const host = await models.Host.create(testHostData, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
 
       // Set `id` does not change value of id
@@ -84,18 +84,20 @@ describe(d('Host Model'), () => {
     it('allows null', async () => {
       const { models } = await init();
       const { iban, ...noIban } = testHostData; // eslint-disable-line no-unused-vars
-      const host = await models.Host.create(noIban);
+      const host = await models.Host.create(noIban, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
+      expect(host.iban).to.be.null;
     });
 
     it('ensures min length {len: [10]}', async () => {
       const { models } = await init();
       const iban = '1234567890';
-      const res = await models.Host.create({ ...testHostData, iban: iban.substring(1) }).catch((e) => e);
+      const shortLen = { ...testHostData, iban: iban.substring(1) };
+      const res = await models.Host.create(shortLen, { include: 'User' }).catch((e) => e);
       expect(res).to.be.an('Error');
       expect(res.name).to.equal('SequelizeValidationError');
 
-      const host = await models.Host.create({ ...testHostData, iban });
+      const host = await models.Host.create({ ...testHostData, iban }, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.iban).to.equal(iban);
     });
@@ -103,11 +105,11 @@ describe(d('Host Model'), () => {
     it('ensures max length {len: [, 21]}', async () => {
       const { models } = await init();
       const iban = Array.from({ length: 22 }, () => '1').join('');
-      const res = await models.Host.create({ ...testHostData, iban }).catch((e) => e);
+      const res = await models.Host.create({ ...testHostData, iban }, { include: 'User' }).catch((e) => e);
       expect(res).to.be.an('Error');
       expect(res.name).to.equal('SequelizeValidationError');
 
-      const host = await models.Host.create({ ...testHostData, iban: iban.substring(1) });
+      const host = await models.Host.create({ ...testHostData, iban: iban.substring(1) }, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.iban).to.equal(iban.substring(1));
     });
@@ -115,7 +117,7 @@ describe(d('Host Model'), () => {
     it('allows number (!)', async () => {
       const { models } = await init();
       const iban = 1234567890;
-      const host = await models.Host.create({ ...testHostData, iban });
+      const host = await models.Host.create({ ...testHostData, iban }, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.iban).to.equal(`${iban}`);
     });
@@ -126,18 +128,20 @@ describe(d('Host Model'), () => {
     it('allows null', async () => {
       const { models } = await init();
       const { taxNumber, ...noTaxNumber } = testHostData; // eslint-disable-line no-unused-vars
-      const host = await models.Host.create(noTaxNumber);
+      const host = await models.Host.create(noTaxNumber, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
+      expect(host.taxNumber).to.be.null;
     });
 
     it('ensures min length {len: [7]}', async () => {
       const { models } = await init();
       const taxNumber = '1234567';
-      const res = await models.Host.create({ ...testHostData, taxNumber: taxNumber.substring(1) }).catch((e) => e);
+      const shortLen = { ...testHostData, taxNumber: taxNumber.substring(1) };
+      const res = await models.Host.create(shortLen, { include: 'User' }).catch((e) => e);
       expect(res).to.be.an('Error');
       expect(res.name).to.equal('SequelizeValidationError');
 
-      const host = await models.Host.create({ ...testHostData, taxNumber });
+      const host = await models.Host.create({ ...testHostData, taxNumber }, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.taxNumber).to.equal(taxNumber);
     });
@@ -145,11 +149,14 @@ describe(d('Host Model'), () => {
     it('ensures max length {len: [, 11]}', async () => {
       const { models } = await init();
       const taxNumber = Array.from({ length: 12 }, () => '1').join('');
-      const res = await models.Host.create({ ...testHostData, taxNumber }).catch((e) => e);
+      const res = await models.Host.create({ ...testHostData, taxNumber }, { include: 'User' }).catch((e) => e);
       expect(res).to.be.an('Error');
       expect(res.name).to.equal('SequelizeValidationError');
 
-      const host = await models.Host.create({ ...testHostData, taxNumber: taxNumber.substring(1) });
+      const host = await models.Host.create(
+        { ...testHostData, taxNumber: taxNumber.substring(1) },
+        { include: 'User' },
+      );
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.taxNumber).to.equal(taxNumber.substring(1));
     });
@@ -157,7 +164,7 @@ describe(d('Host Model'), () => {
     it('allows number (!)', async () => {
       const { models } = await init();
       const taxNumber = 1234567;
-      const host = await models.Host.create({ ...testHostData, taxNumber });
+      const host = await models.Host.create({ ...testHostData, taxNumber }, { include: 'User' });
       expect(host.id).to.be.a('number').greaterThan(0);
       expect(host.taxNumber).to.equal(`${taxNumber}`);
     });
@@ -167,7 +174,7 @@ describe(d('Host Model'), () => {
   describe('field validation: timestamps', () => {
     it('has createdAt and updatedAt', async () => {
       const { models } = await init();
-      const actual = await models.Host.create(testHostData);
+      const actual = await models.Host.create(testHostData, { include: 'User' });
       expect(actual.createdAt).to.be.a('Date');
       expect(actual.updatedAt).to.be.a('Date');
     });

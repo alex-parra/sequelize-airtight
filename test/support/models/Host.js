@@ -1,10 +1,6 @@
 const { DataTypes } = require('sequelize');
 
 const attributes = {
-  userId: {
-    type: DataTypes.INTEGER,
-    references: { model: 'User', key: 'id' },
-  },
   iban: {
     type: DataTypes.STRING(21),
     allowNull: true,
@@ -25,8 +21,8 @@ module.exports = {
   load: (sequelize) => {
     const Host = sequelize.define('Host', attributes, options);
     Host.associate = ({ User }) => {
-      Host.belongsTo(User);
-      User.hasOne(Host);
+      Host.belongsTo(User, { as: 'User', foreignKey: { name: 'userId', allowNull: false }, targetKey: 'id' });
+      User.hasOne(Host, { as: 'Host', sourceKey: 'id', foreignKey: 'userId' });
     };
     return Host;
   },
