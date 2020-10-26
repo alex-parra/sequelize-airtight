@@ -15,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres
+        image: postgres:12-alpine
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: airtight
+          POSTGRES_USER: airtight_user
+          POSTGRES_PASSWORD: airtight_user_pass
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -39,9 +41,9 @@ jobs:
         env:
           DB_HOST: localhost
           DB_PORT: 5432
-          DB_NAME: postgres
-          DB_USER: postgres
-          DB_PASS: postgres
+          DB_NAME: airtight
+          DB_USER: airtight_user
+          DB_PASS: airtight_user_pass
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
