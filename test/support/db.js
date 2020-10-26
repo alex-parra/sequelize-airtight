@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const loadModels = require('./models');
 
-const airtight = require('sequelize-airtight');
+const airtight = require('../../lib');
 
 let sequelize;
 
