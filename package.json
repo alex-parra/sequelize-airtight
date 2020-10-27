@@ -23,7 +23,7 @@
     "Alex Parra <alexpds@gmail.com>"
   ],
   "main": "lib/index",
-  "types": "lib/index",
+  "types": "lib/types",
   "files": [
     "lib"
   ],
@@ -32,8 +32,11 @@
   },
   "module": "commonjs",
   "scripts": {
+    "prebuild": "rimraf ./lib",
     "build": "tsc",
-    "test": "mocha",
+    "test": "npm run test:v6",
+    "test:v6": "SEQUELIZE_VERSION=6 mocha",
+    "test:v5": "SEQUELIZE_VERSION=5 mocha",
     "lint": "eslint --ext .js,.ts --quiet --fix src/"
   },
   "husky": {
@@ -63,10 +66,13 @@
     "mocha": "^8.2.0",
     "pg": "^8.4.1",
     "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
     "sequelize": "^6.3.5",
+    "sequelize_v5": "npm:sequelize@^5.22.3",
+    "sequelize_v6": "npm:sequelize@^6.3.5",
     "typescript": "^4.0.3"
   },
   "peerDependencies": {
-    "sequelize": "^6.3.5"
+    "sequelize": "5.x || 6.x"
   }
 }

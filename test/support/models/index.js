@@ -5,7 +5,7 @@ const path = require('path');
 const models = fs.readdirSync(__dirname).reduce((acc, file) => {
   const fileName = path.basename(file, '.js');
   if (['index'].includes(fileName)) return acc;
-  return { ...acc, [fileName]: require(`./${file}`) };
+  return { ...acc, [fileName]: `./${file}` };
 }, {});
 
 /**
@@ -16,12 +16,14 @@ const loadModels = (sequelize) => {
   sequelize.Sequelize.Model.associate = (models) => {};
 
   // Load models into sequelize
-  Object.values(models).forEach((model) => model.load(sequelize));
+  Object.values(models).forEach((modelPath) => {
+    require(modelPath).load(sequelize);
+  });
 
   // Associate now that all models are loaded into sequelize
   Object.values(sequelize.models).forEach((model) => model.associate(sequelize.models));
 };
 
-module.exports = (sequelize) => {
-  loadModels(sequelize);
+module.exports = {
+  loadModels,
 };

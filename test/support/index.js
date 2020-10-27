@@ -1,5 +1,9 @@
 require('dotenv').config();
 
+const airtightVersion = require('../../package.json').version;
+
+const { Sequelize, DataTypes } = require('./sequelize');
+
 const DB = require('./db');
 
 const dbConfig = {
@@ -35,7 +39,7 @@ const app = {
  */
 const init = async () => {
   if (!app.db) {
-    app.db = await DB.init(dbConfig);
+    app.db = await DB.init(Sequelize, dbConfig);
     app.models = app.db.models;
   }
   return app;
@@ -55,4 +59,7 @@ module.exports = {
   d,
   init,
   dbReset: app.dbReset,
+  Sequelize,
+  DataTypes,
+  airtightVersion,
 };
