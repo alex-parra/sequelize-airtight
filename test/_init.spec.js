@@ -1,7 +1,6 @@
 const expect = require('chai').expect;
-const { Sequelize } = require('sequelize');
 
-const { d, init } = require('./support');
+const { d, init, Sequelize } = require('./support');
 
 describe(d('Sequelize setup'), () => {
   it('connected, synced and models loaded', async () => {
