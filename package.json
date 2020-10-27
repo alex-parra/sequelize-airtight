@@ -38,7 +38,7 @@
     "test:v6": "SEQUELIZE_VERSION=6 mocha",
     "test:v5": "SEQUELIZE_VERSION=5 mocha",
     "lint": "eslint --ext .js,.ts --quiet --fix src/",
-    "release": "release-it"
+    "release": "dotenv release-it --"
   },
   "husky": {
     "hooks": {
@@ -71,6 +71,7 @@
     "@typescript-eslint/parser": "^4.4.1",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.13.0",
     "eslint-plugin-prettier": "^3.1.4",
