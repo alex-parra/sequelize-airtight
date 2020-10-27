@@ -13,7 +13,7 @@ const attributes = {
     allowNull: true,
     validate: { isEmail: true },
     airtight: {
-      v8n: { isType: 'string' },
+      vet: { isType: 'string' },
       set: { trim: true },
     },
   },
@@ -27,7 +27,7 @@ const attributes = {
     allowNull: true,
     validate: { len: [1, 255] },
     airtight: {
-      v8n: { isType: 'string' },
+      vet: { isType: 'string' },
       set: { trim: true },
     },
   },

@@ -37,7 +37,8 @@
     "test": "npm run test:v6",
     "test:v6": "SEQUELIZE_VERSION=6 mocha",
     "test:v5": "SEQUELIZE_VERSION=5 mocha",
-    "lint": "eslint --ext .js,.ts --quiet --fix src/"
+    "lint": "eslint --ext .js,.ts --quiet --fix src/",
+    "release": "release-it"
   },
   "husky": {
     "hooks": {
@@ -48,6 +49,19 @@
     "*.{js,ts}": [
       "eslint --fix"
     ]
+  },
+  "release-it": {
+    "git": {
+      "commit": true,
+      "tag": true,
+      "push": true
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+      "publish": true
+    }
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
@@ -60,12 +74,12 @@
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.13.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "express": "^4.17.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "mocha": "^8.2.0",
     "pg": "^8.4.1",
     "prettier": "^2.1.2",
+    "release-it": "^14.2.0",
     "rimraf": "^3.0.2",
     "sequelize": "^6.3.5",
     "sequelize_v5": "npm:sequelize@^5.22.3",

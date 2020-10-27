@@ -53,7 +53,7 @@ export interface SetMutators {
 export interface ColumnMutators {
   set?: SetMutators;
   get?: GetMutators;
-  v8n?: Validators;
+  vet?: Validators;
 }
 
 export interface Attr extends ModelAttributeColumnOptions {

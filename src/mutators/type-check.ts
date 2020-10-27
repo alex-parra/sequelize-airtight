@@ -6,7 +6,7 @@ const typeCheckers: TypeChecks = {
 
 /**
  * Validate that `value` is one of the specified types
- * eg: `isType: 'string,Date'`
+ * eg: `isType: 'string|Date'`
  */
 export const isType: Mutator<boolean | string> = ({ value, options, attrName }) => {
   if (value == null) return value; // skip null or undefined (use allowNull: false)
@@ -15,7 +15,7 @@ export const isType: Mutator<boolean | string> = ({ value, options, attrName }) 
     throw TypeError('param of isType must be `false` or csv of types');
   }
 
-  const types: string[] = options.split(',').map((type) => type.trim());
+  const types: string[] = options.split('|').map((type) => type.trim());
   const checks: boolean[] = types.map((type) => {
     if (type in typeCheckers) return typeCheckers[type](value);
     throw TypeError('Type `' + type + '` is not supported by `isType`');

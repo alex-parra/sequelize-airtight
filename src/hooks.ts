@@ -49,9 +49,9 @@ const beforeValidate: Airtight.BeforeValidate = (instance, options) => {
     // Run only on changed fields
     if (!instance.changed(attrName)) return;
 
-    const { v8n = {} } = attr.airtight || {};
+    const { vet = {} } = attr.airtight || {};
     try {
-      mutate(validators, v8n, instance.getDataValue(attrName), instance, attrName, attr);
+      mutate(validators, vet, instance.getDataValue(attrName), instance, attrName, attr);
     } catch (e) {
       const error = new ValidationErrorItem(e.message);
       throw new ValidationError('Airtight Validation Failed', [error]);
