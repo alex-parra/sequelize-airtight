@@ -2,6 +2,9 @@
 
 Make your Sequelize models foolproof with extensive validation checks, setters and getters.
 
+![Sequelize v6](https://github.com/alex-parra/sequelize-airtight/workflows/Sequelize%20v6/badge.svg)
+![Sequelize v5](https://github.com/alex-parra/sequelize-airtight/workflows/Sequelize%20v5/badge.svg)
+
 ## Why
 
 Sequelize includes builtin validation through [validator.js](https://github.com/validatorjs/validator.js) and while there are several validators available, some are missing which can be implemented with custom validators.  
