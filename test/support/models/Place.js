@@ -11,6 +11,20 @@ const attributes = {
     allowNull: true,
     validate: { len: [1] },
   },
+  published: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+    validate: { isBoolean: true },
+  },
+  publishedAirtight: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+    airtight: {
+      vet: { isType: 'bool' },
+    },
+  },
   maxGuests: {
     type: DataTypes.INTEGER,
     allowNull: true,

@@ -332,6 +332,66 @@ describe(d('Place Model'), () => {
     });
   });
 
+  // published -----------------------------------------------
+  describe('field: published', () => {
+    it('allows null', async () => {
+      const { models } = await init();
+      const { published, ...noPublished } = testPlaceData; // eslint-disable-line no-unused-vars
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const place = await models.Place.create({ ...noPublished, hostId: host.id }).catch((e) => e);
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.published).to.be.false;
+    });
+
+    it('allows boolean', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asBool = { ...testPlaceData, hostId: host.id, published: true };
+      const place = await models.Place.create(asBool).catch((e) => e);
+      expect(place).not.to.be.an('Error');
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.published).to.be.true;
+    });
+
+    it('allows number (`0`, `1`) (!)', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asBool = { ...testPlaceData, hostId: host.id, published: 1 };
+      const place = await models.Place.create(asBool).catch((e) => e);
+      expect(place).not.to.be.an('Error');
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.published).to.be.true;
+    });
+
+    it('allows string (`0`, `1`) (!)', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asBool = { ...testPlaceData, hostId: host.id, published: '1' };
+      const place = await models.Place.create(asBool).catch((e) => e);
+      expect(place).not.to.be.an('Error');
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.published).to.be.true;
+    });
+
+    it('does not allow string', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asBool = { ...testPlaceData, hostId: host.id, published: 'yes' };
+      const place = await models.Place.create(asBool).catch((e) => e);
+      expect(place).to.be.an('Error');
+      expect(place.name).to.equal('SequelizeValidationError');
+    });
+
+    it('does not allow number', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asBool = { ...testPlaceData, hostId: host.id, published: 123 };
+      const place = await models.Place.create(asBool).catch((e) => e);
+      expect(place).to.be.an('Error');
+      expect(place.name).to.equal('SequelizeValidationError');
+    });
+  });
+
   // maxGuests -----------------------------------------------
   describe('field: maxGuests', () => {
     it('allows null', async () => {
