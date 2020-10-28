@@ -2,6 +2,7 @@ import type { Mutator, TypeChecks } from '../airtight';
 
 const typeCheckers: TypeChecks = {
   string: (value) => String(value) === value,
+  number: (value) => typeof value === 'number',
 };
 
 /**

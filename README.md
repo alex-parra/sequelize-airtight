@@ -86,6 +86,11 @@ airtight: { vet: { isType: 'string' } }
 - `{isType: 'string'}` - Only allow setting a field to string
 - `{isType: 'string|number'}` - only allow setting the field to string or number
 
+Types supported:
+
+- `string` _since v0.0.1_
+- `number` _since v0.2.0_
+
 ### `readOnly` _TODO_
 
 ---
