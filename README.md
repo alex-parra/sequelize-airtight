@@ -85,11 +85,24 @@ airtight: { vet: { isType: 'string' } }
 - Throws `SequelizeValidationError` if the value is not one of the specified.
 - `{isType: 'string'}` - Only allow setting a field to string
 - `{isType: 'string|number'}` - only allow setting the field to string or number
+- If `value` is null or undefined check is skipped
 
 Types supported:
 
 - `string` _since v0.0.1_
+```javascript
+  airtight: { vet: { isType: 'string' } }
+```
+
 - `number` _since v0.2.0_
+```javascript
+  airtight: { vet: { isType: 'number' } }
+```
+
+- `bool` _since v0.3.0_ (aliased as `boolean`)
+```javascript
+  airtight: { vet: { isType: 'bool' } }
+```
 
 ### `readOnly` _TODO_
 
