@@ -34,7 +34,7 @@
   "scripts": {
     "prebuild": "rimraf ./lib",
     "build": "tsc",
-    "test": "npm run test:v6",
+    "test": "nyc npm run test:v6",
     "test:v6": "SEQUELIZE_VERSION=6 mocha",
     "test:v5": "SEQUELIZE_VERSION=5 mocha",
     "lint": "eslint --ext .js,.ts --quiet --fix src/",
@@ -78,6 +78,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "mocha": "^8.2.0",
+    "nyc": "^15.1.0",
     "pg": "^8.4.1",
     "prettier": "^2.1.2",
     "release-it": "^14.2.0",
