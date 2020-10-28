@@ -83,6 +83,10 @@ export interface AttrSet {
   (attrName: string, attr: Attr): (this: Model, value: unknown) => void;
 }
 
+export interface TypeChecker {
+  (value: unknown): boolean;
+}
+
 export interface TypeChecks {
-  [key: string]: (value: unknown) => boolean;
+  [key: string]: TypeChecker;
 }

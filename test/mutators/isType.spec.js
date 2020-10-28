@@ -33,7 +33,6 @@ describe(d('Validator: isType'), () => {
     const d = { value: 'airtight', attrName };
     expect(() => isType({ ...d, options: 'undefined' })).to.throw(TypeError);
     expect(() => isType({ ...d, options: 'null' })).to.throw(TypeError);
-    expect(() => isType({ ...d, options: 'bool' })).to.throw(TypeError);
     expect(() => isType({ ...d, options: 'array' })).to.throw(TypeError);
     expect(() => isType({ ...d, options: 'object' })).to.throw(TypeError);
     expect(() => isType({ ...d, options: 'Date' })).to.throw(TypeError);
@@ -47,10 +46,14 @@ describe(d('Validator: isType'), () => {
     // implemented
     expect(() => isType({ ...d, value: 'hello', options: 'string' })).not.to.throw();
     expect(() => isType({ ...d, value: 123, options: 'number' })).not.to.throw();
+    expect(() => isType({ ...d, value: true, options: 'bool' })).not.to.throw();
   });
 
-  it('if options is `string` it fails if value is not a `string`', async () => {
+  it('should fail if options is `string` and value is not', async () => {
     const d = { options: 'string', attrName };
+    expect(() => isType({ ...d, value: undefined })).not.to.throw();
+    expect(() => isType({ ...d, value: null })).not.to.throw();
+
     expect(() => isType({ ...d, value: 1 })).to.throw(Error);
     expect(() => isType({ ...d, value: 1.2 })).to.throw(Error);
     expect(() => isType({ ...d, value: true })).to.throw(Error);
@@ -62,9 +65,13 @@ describe(d('Validator: isType'), () => {
     expect(() => isType({ ...d, value: '' })).not.to.throw();
   });
 
-  it('if options is `number` it fails if value is not a `number`', async () => {
+  it('should fail if options is `number` and value is not', async () => {
     const d = { options: 'number', attrName };
+    expect(() => isType({ ...d, value: undefined })).not.to.throw();
+    expect(() => isType({ ...d, value: null })).not.to.throw();
+
     expect(() => isType({ ...d, value: '' })).to.throw(Error);
+    expect(() => isType({ ...d, value: '123' })).to.throw(Error);
     expect(() => isType({ ...d, value: true })).to.throw(Error);
     expect(() => isType({ ...d, value: false })).to.throw(Error);
     expect(() => isType({ ...d, value: [1, 2, 3] })).to.throw(Error);
@@ -73,5 +80,25 @@ describe(d('Validator: isType'), () => {
 
     expect(() => isType({ ...d, value: 1 })).not.to.throw();
     expect(() => isType({ ...d, value: 1.2 })).not.to.throw();
+  });
+
+  it('should fail if options is `bool` (or `boolean`) and value is not', async () => {
+    const d = { options: 'bool', attrName };
+    expect(() => isType({ ...d, value: undefined })).not.to.throw();
+    expect(() => isType({ ...d, value: null })).not.to.throw();
+
+    expect(() => isType({ ...d, value: '' })).to.throw(Error);
+    expect(() => isType({ ...d, value: '1' })).to.throw(Error);
+    expect(() => isType({ ...d, value: '0' })).to.throw(Error);
+    expect(() => isType({ ...d, value: 'true' })).to.throw(Error);
+    expect(() => isType({ ...d, value: 'false' })).to.throw(Error);
+    expect(() => isType({ ...d, value: 1 })).to.throw(Error);
+    expect(() => isType({ ...d, value: 0 })).to.throw(Error);
+    expect(() => isType({ ...d, value: [1, 2, 3] })).to.throw(Error);
+    expect(() => isType({ ...d, value: { hello: 'world' } })).to.throw(Error);
+    expect(() => isType({ ...d, value: new Date() })).to.throw(Error);
+
+    expect(() => isType({ ...d, value: true })).not.to.throw();
+    expect(() => isType({ ...d, value: false })).not.to.throw();
   });
 });
