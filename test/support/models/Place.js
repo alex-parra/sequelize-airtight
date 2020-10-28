@@ -16,6 +16,14 @@ const attributes = {
     allowNull: true,
     validate: { isInt: { min: 1 } },
   },
+  maxGuestsAirtight: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    validate: { isInt: { min: 1 } },
+    airtight: {
+      vet: { isType: 'number' },
+    },
+  },
   country: {
     type: DataTypes.STRING,
     allowNull: true,
