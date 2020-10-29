@@ -2,8 +2,10 @@
 
 Make your Sequelize models foolproof with extensive validation checks, setters and getters.
 
+[![NPM version][npm-image]][npm-url]
 ![Sequelize v6](https://github.com/alex-parra/sequelize-airtight/workflows/Sequelize%20v6/badge.svg)
 ![Sequelize v5](https://github.com/alex-parra/sequelize-airtight/workflows/Sequelize%20v5/badge.svg)
+[![Downloads][downloads-image]][npm-url]
 
 ## Why
 
@@ -78,7 +80,11 @@ use in `airtight.vet`
 ### `isType` _since v0.0.1_
 
 ```javascript
-airtight: { vet: { isType: 'string' } }
+airtight: {
+  vet: {
+    isType: 'string';
+  }
+}
 ```
 
 - Allowed in `vet`
@@ -90,18 +96,33 @@ airtight: { vet: { isType: 'string' } }
 Types supported:
 
 - `string` _since v0.0.1_
+
 ```javascript
-  airtight: { vet: { isType: 'string' } }
+airtight: {
+  vet: {
+    isType: 'string';
+  }
+}
 ```
 
 - `number` _since v0.2.0_
+
 ```javascript
-  airtight: { vet: { isType: 'number' } }
+airtight: {
+  vet: {
+    isType: 'number';
+  }
+}
 ```
 
 - `bool` _since v0.3.0_ (aliased as `boolean`)
+
 ```javascript
-  airtight: { vet: { isType: 'bool' } }
+airtight: {
+  vet: {
+    isType: 'bool';
+  }
+}
 ```
 
 ### `readOnly` _TODO_
@@ -115,7 +136,11 @@ use in `airtight.set` or `airtight.get`
 ### `trim` _since v0.0.1_
 
 ```javascript
-airtight: { set: { trim: true } }
+airtight: {
+  set: {
+    trim: true;
+  }
+}
 ```
 
 - Allowed in `set` or `get`
@@ -129,7 +154,11 @@ airtight: { set: { trim: true } }
 ### `lower` _since v0.4.0_
 
 ```javascript
-airtight: { set: { lower: true } }
+airtight: {
+  set: {
+    lower: true;
+  }
+}
 ```
 
 - Allowed in `set` or `get`
@@ -155,3 +184,9 @@ airtight: { set: { lower: true } }
 ## Credit
 
 Created by [Alex Parra](https://github.com/alex-parra) on Oct 17th, 2020.
+
+---
+
+[npm-url]: https://npmjs.com/package/sequelize-airtight
+[npm-image]: http://img.shields.io/npm/v/sequelize-airtight.svg
+[downloads-image]: http://img.shields.io/npm/dm/sequelize-airtight.svg
