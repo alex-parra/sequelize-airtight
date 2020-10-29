@@ -59,6 +59,7 @@ module.exports = {
   d,
   init,
   dbReset: app.dbReset,
+  getErr: (e) => e,
   Sequelize,
   DataTypes,
   airtightVersion,

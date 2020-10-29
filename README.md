@@ -77,7 +77,7 @@ use in `airtight.vet`
 
 ### `isType` _since v0.0.1_
 
-```
+```javascript
 airtight: { vet: { isType: 'string' } }
 ```
 
@@ -114,7 +114,7 @@ use in `airtight.set` or `airtight.get`
 
 ### `trim` _since v0.0.1_
 
-```
+```javascript
 airtight: { set: { trim: true } }
 ```
 
@@ -126,7 +126,17 @@ airtight: { set: { trim: true } }
 
 ### `upper` _TODO_
 
-### `lower` _TODO_
+### `lower` _since v0.4.0_
+
+```javascript
+airtight: { set: { lower: true } }
+```
+
+- Allowed in `set` or `get`
+- If set to `true`, converts string to full lowercase. `SeQuElIzE` >> `sequelize`
+- Returns `value` unchanged if it's not a `string`;
+- If set to `false` returns `value` unchanged;  
+  Ex: `airtight: { set: { lower: false } }`
 
 ### `decimals` _TODO_
 

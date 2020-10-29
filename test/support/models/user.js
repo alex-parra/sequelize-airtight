@@ -14,7 +14,7 @@ const attributes = {
     validate: { isEmail: true },
     airtight: {
       vet: { isType: 'string' },
-      set: { trim: true },
+      set: { trim: true, lower: true },
     },
   },
   name: {
