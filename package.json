@@ -34,6 +34,7 @@
   "scripts": {
     "prebuild": "rimraf ./lib",
     "build": "tsc",
+    "bt": "npm run build && npm run test",
     "test": "nyc npm run test:v6",
     "test:v6": "SEQUELIZE_VERSION=6 mocha",
     "test:v5": "SEQUELIZE_VERSION=5 mocha",
