@@ -80,15 +80,11 @@ use in `airtight.vet`
 ### `isType` _since v0.0.1_
 
 ```javascript
-airtight: {
-  vet: {
-    isType: 'string';
-  }
-}
+airtight: { vet: { isType: 'string' } }
 ```
 
 - Allowed in `vet`
-- Throws `SequelizeValidationError` if the value is not one of the specified.
+- Throws `SequelizeValidationError` if the value is not one of the specified
 - `{isType: 'string'}` - Only allow setting a field to string
 - `{isType: 'string|number'}` - only allow setting the field to string or number
 - If `value` is null or undefined check is skipped
@@ -98,31 +94,19 @@ Types supported:
 - `string` _since v0.0.1_
 
 ```javascript
-airtight: {
-  vet: {
-    isType: 'string';
-  }
-}
+airtight: { vet: { isType: 'string' } }
 ```
 
 - `number` _since v0.2.0_
 
 ```javascript
-airtight: {
-  vet: {
-    isType: 'number';
-  }
-}
+airtight: { vet: { isType: 'number' } }
 ```
 
 - `bool` _since v0.3.0_ (aliased as `boolean`)
 
 ```javascript
-airtight: {
-  vet: {
-    isType: 'bool';
-  }
-}
+airtight: { vet: { isType: 'bool' } }
 ```
 
 ### `readOnly` _TODO_
@@ -136,35 +120,36 @@ use in `airtight.set` or `airtight.get`
 ### `trim` _since v0.0.1_
 
 ```javascript
-airtight: {
-  set: {
-    trim: true;
-  }
-}
+airtight: { set: { trim: true } }
 ```
 
 - Allowed in `set` or `get`
-- If set to `true`, trims leading and trailing white-space from strings.
-- Returns `value` unchanged if it's not a `string`;
-- If set to `false` returns `value` unchanged;  
+- If set to `true`, trims leading and trailing white-space from strings
+- Returns `value` unchanged if it's not a `string`
+- If set to `false` returns `value` unchanged
   Ex: `airtight: { set: { trim: false } }`
 
-### `upper` _TODO_
+### `upper` _since v0.5.0_
+```javascript
+airtight: { set: { upper: true } }
+```
+
+- Allowed in `set` or `get`
+- If set to `true`, converts string to full uppercase. `SeQuElIzE` >> `SEQUELIZE`
+- Returns `value` unchanged if it's not a `string`
+- If set to `false` returns `value` unchanged
+  Ex: `airtight: { set: { upper: false } }`
 
 ### `lower` _since v0.4.0_
 
 ```javascript
-airtight: {
-  set: {
-    lower: true;
-  }
-}
+airtight: { set: { lower: true } }
 ```
 
 - Allowed in `set` or `get`
 - If set to `true`, converts string to full lowercase. `SeQuElIzE` >> `sequelize`
-- Returns `value` unchanged if it's not a `string`;
-- If set to `false` returns `value` unchanged;  
+- Returns `value` unchanged if it's not a `string`
+- If set to `false` returns `value` unchanged
   Ex: `airtight: { set: { lower: false } }`
 
 ### `decimals` _TODO_

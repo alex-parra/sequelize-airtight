@@ -10,10 +10,19 @@ export const trim: Mutator<boolean> = ({ value, options }) => {
 };
 
 /**
- * Convert to lowercase respecting locale
+ * Convert to lowercase
  */
 export const lower: Mutator<boolean> = ({ value, options }) => {
   if (options !== true) return value;
   if (typeof value !== 'string') return value;
   return value.toLowerCase();
+};
+
+/**
+ * Convert to uppercase
+ */
+export const upper: Mutator<boolean> = ({ value, options }) => {
+  if (options !== true) return value;
+  if (typeof value !== 'string') return value;
+  return value.toUpperCase();
 };

@@ -484,6 +484,15 @@ describe(d('Place Model'), () => {
       expect(place.country).to.equal('PT');
     });
 
+    it('allows lowercase code (eg. does not normalize to uppercase) (!)', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asLower = { ...testPlaceData, hostId: host.id, country: 'pt' };
+      const rLower = await models.Place.create(asLower).catch((e) => e);
+      expect(rLower).not.to.be.an('Error');
+      expect(rLower.country).to.equal('pt');
+    });
+
     it('does not allow invalid code', async () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
