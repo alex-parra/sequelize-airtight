@@ -45,6 +45,16 @@ const attributes = {
       isISO31661Alpha2: true, // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
     },
   },
+  countryAirtight: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isISO31661Alpha2: true, // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    },
+    airtight: {
+      set: { upper: true },
+    },
+  },
 };
 
 const options = {
