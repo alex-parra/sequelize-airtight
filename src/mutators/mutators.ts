@@ -1,12 +1,14 @@
 import type { Mutator } from '../airtight';
+import { isFinite, isFloat, isString, round } from '../utils';
 
 /**
  * Trim white-space from both ends of string
  */
 export const trim: Mutator<boolean> = ({ value, options }) => {
   if (options !== true) return value;
-  if (typeof value !== 'string') return value;
-  return value.trim();
+  if (!isString(value)) return value;
+
+  return String.prototype.trim.call(value);
 };
 
 /**
@@ -14,8 +16,9 @@ export const trim: Mutator<boolean> = ({ value, options }) => {
  */
 export const lower: Mutator<boolean> = ({ value, options }) => {
   if (options !== true) return value;
-  if (typeof value !== 'string') return value;
-  return value.toLowerCase();
+  if (!isString(value)) return value;
+
+  return String.prototype.toLowerCase.call(value);
 };
 
 /**
@@ -23,6 +26,7 @@ export const lower: Mutator<boolean> = ({ value, options }) => {
  */
 export const upper: Mutator<boolean> = ({ value, options }) => {
   if (options !== true) return value;
-  if (typeof value !== 'string') return value;
-  return value.toUpperCase();
+  if (!isString(value)) return value;
+
+  return String.prototype.toUpperCase.call(value);
 };
