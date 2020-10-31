@@ -184,4 +184,76 @@ describe(d('Place Model - Airtight fields'), () => {
       expect(rP.name).to.equal('SequelizeValidationError');
     });
   });
+
+  // pricePerNightAirtight -----------------------------------------------
+  describe('field: pricePerNightAirtight', () => {
+    it('allows null', async () => {
+      const { models } = await init();
+      const { pricePerNightAirtight, ...noPrice } = testPlaceData; // eslint-disable-line no-unused-vars
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const place = await models.Place.create({ ...noPrice, hostId: host.id }).catch(getErr);
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.pricePerNightAirtight).to.be.null;
+    });
+
+    it('must be float', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asStr = { ...testPlaceData, pricePerNightAirtight: '€ 123' };
+      const rStr = await models.Place.create({ ...asStr, hostId: host.id }).catch(getErr);
+      expect(rStr).to.be.an('Error');
+      expect(rStr.name).to.equal('SequelizeValidationError');
+
+      const asBool = { ...testPlaceData, pricePerNightAirtight: true };
+      const rBool = await models.Place.create({ ...asBool, hostId: host.id }).catch(getErr);
+      expect(rBool).to.be.an('Error');
+      expect(rBool.name).to.equal('SequelizeValidationError');
+
+      const asNaN = { ...testPlaceData, pricePerNightAirtight: NaN };
+      const rNaN = await models.Place.create({ ...asNaN, hostId: host.id }).catch(getErr);
+      expect(rNaN).to.be.an('Error');
+      expect(rNaN.name).to.equal('SequelizeValidationError');
+
+      const asInf = { ...testPlaceData, pricePerNightAirtight: Infinity };
+      const rInf = await models.Place.create({ ...asInf, hostId: host.id }).catch(getErr);
+      expect(rInf).to.be.an('Error');
+      expect(rInf.name).to.equal('SequelizeValidationError');
+    });
+
+    it('can NOT be a float string', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloatStr = { ...testPlaceData, pricePerNightAirtight: '123.45' };
+      const r1 = await models.Place.create({ ...asFloatStr, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNightAirtight).to.equal(123.45);
+    });
+
+    it('can not be an integer string', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloatStr = { ...testPlaceData, pricePerNightAirtight: '123' };
+      const r1 = await models.Place.create({ ...asFloatStr, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNightAirtight).to.equal(123);
+    });
+
+    it('must be >= 0', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asNeg = { ...testPlaceData, pricePerNightAirtight: -123 };
+      const r1 = await models.Place.create({ ...asNeg, hostId: host.id }).catch(getErr);
+      expect(r1).to.be.an('Error');
+      expect(r1.name).to.equal('SequelizeValidationError');
+    });
+
+    it('does limit decimals', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloat = { ...testPlaceData, pricePerNightAirtight: 123.456789 };
+      const r1 = await models.Place.create({ ...asFloat, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNightAirtight).to.equal(123.46);
+    });
+  });
 });

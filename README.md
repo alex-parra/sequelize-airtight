@@ -1,5 +1,4 @@
 # Sequelize Airtight
-
 Make your Sequelize models foolproof with extensive validation checks, setters and getters.
 
 [![NPM version][npm-image]][npm-url]
@@ -8,35 +7,30 @@ Make your Sequelize models foolproof with extensive validation checks, setters a
 [![Downloads][downloads-image]][npm-url]
 
 ## Why
-
 Sequelize includes builtin validation through [validator.js](https://github.com/validatorjs/validator.js) and while there are several validators available, some are missing which can be implemented with custom validators.  
 But doing so in each project is error prone so that's one of the goals of this project.  
 Examples:
-
 - ensure a field only accepts `string` or `string` and `Date`, or `number` only.
 - ensure a field isn't changed inadvertedly eg. auto-increment `id` should be read-only
 
 And to ensure data is truly consistent, the usefulness of "normalizers" is indisputable and where better than close to the "metal".  
 As such, this project also packs `mutators` that allow data to be transformed on `read` and on `write`, ensuring for example:
-
 - that `unique` indexes aren't "fooled" by white-space or case differences
 - that all white-space strings aren't considered valid input
 - that `number` be set to a `Date` field
 - etc...
 
 ## Dependencies
-
-- Tested with Node 10.x, 12.x and 14.x
-- Tested with Sequelize v5.x and v6.x
+Over 160 tests run against:
+- Node 10.x, 12.x and 14.x
+- Sequelize v5.x and v6.x
 
 ## Install
-
 ```bash
 npm install sequelize-airtight
 ```
 
 Where you initialize `sequelize`:
-
 ```javascript
 const airtight = require('sequelize-airtight');
 const sequelize = new Sequelize({ ... });
@@ -46,7 +40,6 @@ airtight.init(sequelize);
 ```
 
 In each model's attributes:
-
 ```javascript
 sequelize.define('MyModel', {
   name: {
@@ -63,7 +56,6 @@ sequelize.define('MyModel', {
 ```
 
 The `airtight` property of each field can contain the following:
-
 - `vet` – Validators that throw error if unmet  
   (_verb_ - make a careful and critical examination of something)
 
@@ -74,11 +66,9 @@ The `airtight` property of each field can contain the following:
 ---
 
 ## Validators
-
 use in `airtight.vet`
 
 ### `isType` _since v0.0.1_
-
 ```javascript
 airtight: { vet: { isType: 'string' } }
 ```
@@ -90,21 +80,17 @@ airtight: { vet: { isType: 'string' } }
 - If `value` is null or undefined check is skipped
 
 Types supported:
-
 - `string` _since v0.0.1_
-
 ```javascript
 airtight: { vet: { isType: 'string' } }
 ```
 
 - `number` _since v0.2.0_
-
 ```javascript
 airtight: { vet: { isType: 'number' } }
 ```
 
 - `bool` _since v0.3.0_ (aliased as `boolean`)
-
 ```javascript
 airtight: { vet: { isType: 'bool' } }
 ```
@@ -114,11 +100,9 @@ airtight: { vet: { isType: 'bool' } }
 ---
 
 ## Mutators
-
 use in `airtight.set` or `airtight.get`
 
 ### `trim` _since v0.0.1_
-
 ```javascript
 airtight: { set: { trim: true } }
 ```
@@ -141,7 +125,6 @@ airtight: { set: { upper: true } }
   Ex: `airtight: { set: { upper: false } }`
 
 ### `lower` _since v0.4.0_
-
 ```javascript
 airtight: { set: { lower: true } }
 ```
@@ -152,14 +135,24 @@ airtight: { set: { lower: true } }
 - If set to `false` returns `value` unchanged
   Ex: `airtight: { set: { lower: false } }`
 
-### `decimals` _TODO_
+### `decimals` _since v0.6.0_
+```javascript
+airtight: { set: { decimals: 2 } }
+```
+
+- Allowed in `set` or `get`
+- Values are rounded eg. `12.344` >> `12.34` and `12.345` >> `12.35`
+- If set to `true`, rounds value to 2 decimals
+- If set to `number`, rounds value to `number` decimals
+- Returns `value` unchanged if value is not `float`
+- If set to `false` returns `value` unchanged
+  Ex: `airtight: { set: { decimals: false } }`
 
 ### `ifNull` _TODO_
 
 ---
 
 ## Contributing
-
 - fork this repo and clone it locally
 - run `npm install`
 - run `npm test` to run tests agaist the default version of sequelize (v6)
@@ -167,11 +160,9 @@ airtight: { set: { lower: true } }
 - run `npm run build` to compile from TypeScript in `./src` to `JavaScript` in `./lib`
 
 ## Credit
-
 Created by [Alex Parra](https://github.com/alex-parra) on Oct 17th, 2020.
 
 ---
-
 [npm-url]: https://npmjs.com/package/sequelize-airtight
 [npm-image]: http://img.shields.io/npm/v/sequelize-airtight.svg
 [downloads-image]: http://img.shields.io/npm/dm/sequelize-airtight.svg

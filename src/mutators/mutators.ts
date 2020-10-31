@@ -30,3 +30,15 @@ export const upper: Mutator<boolean> = ({ value, options }) => {
 
   return String.prototype.toUpperCase.call(value);
 };
+
+/**
+ * Round to decimals
+ */
+const DEFAULT_DECIMALS = 2;
+export const decimals: Mutator<boolean | number> = ({ value, options }): number | unknown => {
+  if (options === false) return value;
+  if (!isFloat(value)) return value;
+
+  const decimals = isFinite(options) ? round(Number(options), 0) : DEFAULT_DECIMALS;
+  return round(Number(value), decimals);
+};
