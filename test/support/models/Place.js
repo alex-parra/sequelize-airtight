@@ -11,6 +11,17 @@ const attributes = {
     allowNull: true,
     validate: { len: [1] },
   },
+  pricePerNight: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+    validate: { isFloat: { min: 0 } },
+  },
+  pricePerNightAirtight: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+    validate: { isFloat: { min: 0 } },
+    airtight: { set: { decimals: 2 } },
+  },
   published: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const { d, init } = require('./support');
+const { d, init, getErr } = require('./support');
 
 const testHostData = { User: { email: 'alex.parra@test.dev' } };
 const testPlaceData = { name: 'Tree House' };
@@ -101,7 +101,7 @@ describe(d('Place Model'), () => {
     it('does not allow null {allowNull: false}', async () => {
       const { models } = await init();
       const { hostId, ...noHostId } = testPlaceData; // eslint-disable-line no-unused-vars
-      const r = await models.Place.create({ ...noHostId }).catch((e) => e);
+      const r = await models.Place.create({ ...noHostId }).catch(getErr);
       expect(r).to.be.an('Error');
       expect(r.name).to.equal('SequelizeValidationError');
     });
@@ -111,7 +111,7 @@ describe(d('Place Model'), () => {
       const { hostId, ...noHostId } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.findByPk(9999);
       expect(host).to.be.null;
-      const r = await models.Place.create({ ...testPlaceData, hostId: 9999 }).catch((e) => e);
+      const r = await models.Place.create({ ...testPlaceData, hostId: 9999 }).catch(getErr);
       expect(r).to.be.an('Error');
       expect(r.name).to.equal('SequelizeForeignKeyConstraintError');
     });
@@ -134,7 +134,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const { name, ...noName } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const r = await models.Place.create({ ...noName, hostId: host.id }).catch((e) => e);
+      const r = await models.Place.create({ ...noName, hostId: host.id }).catch(getErr);
       expect(r).to.be.an('Error');
       expect(r.name).to.equal('SequelizeValidationError');
     });
@@ -142,7 +142,7 @@ describe(d('Place Model'), () => {
     it('does not allow empty string {len: [3]}', async () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const r = await models.Place.create({ ...testPlaceData, hostId: host.id, name: '' }).catch((e) => e);
+      const r = await models.Place.create({ ...testPlaceData, hostId: host.id, name: '' }).catch(getErr);
       expect(r).to.be.an('Error');
       expect(r.name).to.equal('SequelizeValidationError');
     });
@@ -151,7 +151,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = Array.from({ length: 256 }, () => 'a').join('');
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const overLength = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const overLength = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(overLength).to.be.an('Error');
       expect(overLength.name).to.equal('SequelizeValidationError');
 
@@ -168,7 +168,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = 'Beach Cabin';
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name: ` ${name} ` }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name: ` ${name} ` }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).not.to.equal(name);
     });
@@ -181,7 +181,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = '   ';
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).to.equal(name);
     });
@@ -194,7 +194,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = '\n\n\n';
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).to.equal(name);
     });
@@ -207,7 +207,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = '\t\t\t';
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).to.equal(name);
     });
@@ -220,7 +220,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = 1234; // Even if a place is named `1234` it should be a string
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).to.equal(`${name}`); // it's just converted to string
     });
@@ -234,7 +234,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const name = true; // Even if someone is named `true` it should be a string
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, name }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.name).to.equal(`${name}`); // it's just converted to string
     });
@@ -246,7 +246,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const { description, ...noDescription } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...noDescription, hostId: host.id }).catch((e) => e);
+      const place = await models.Place.create({ ...noDescription, hostId: host.id }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.be.null;
     });
@@ -254,7 +254,7 @@ describe(d('Place Model'), () => {
     it('does not allow empty string', async () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, description: '' }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, description: '' }).catch(getErr);
       expect(place).to.be.an('Error');
       expect(place.name).to.equal('SequelizeValidationError');
     });
@@ -267,7 +267,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const onlySpaces = { ...testPlaceData, hostId: host.id, description: '   ' };
-      const place = await models.Place.create(onlySpaces).catch((e) => e);
+      const place = await models.Place.create(onlySpaces).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.equal(onlySpaces.description);
@@ -281,7 +281,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const lineBreak = { ...testPlaceData, hostId: host.id, description: '\n' };
-      const place = await models.Place.create(lineBreak).catch((e) => e);
+      const place = await models.Place.create(lineBreak).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.equal(lineBreak.description);
@@ -295,7 +295,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const lineBreak = { ...testPlaceData, hostId: host.id, description: '\t' };
-      const place = await models.Place.create(lineBreak).catch((e) => e);
+      const place = await models.Place.create(lineBreak).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.equal(lineBreak.description);
@@ -310,7 +310,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asNumber = { ...testPlaceData, hostId: host.id, description: 12345 };
-      const place = await models.Place.create(asNumber).catch((e) => e);
+      const place = await models.Place.create(asNumber).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.equal(`${asNumber.description}`);
@@ -325,10 +325,82 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asNumber = { ...testPlaceData, hostId: host.id, description: true };
-      const place = await models.Place.create(asNumber).catch((e) => e);
+      const place = await models.Place.create(asNumber).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.description).to.equal(`${asNumber.description}`);
+    });
+  });
+
+  // pricePerNight -----------------------------------------------
+  describe('field: pricePerNight', () => {
+    it('allows null', async () => {
+      const { models } = await init();
+      const { pricePerNight, ...noPrice } = testPlaceData; // eslint-disable-line no-unused-vars
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const place = await models.Place.create({ ...noPrice, hostId: host.id }).catch(getErr);
+      expect(place.id).to.be.a('number').greaterThan(0);
+      expect(place.pricePerNight).to.be.null;
+    });
+
+    it('must be float', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asStr = { ...testPlaceData, pricePerNight: '€ 123' };
+      const rStr = await models.Place.create({ ...asStr, hostId: host.id }).catch(getErr);
+      expect(rStr).to.be.an('Error');
+      expect(rStr.name).to.equal('SequelizeValidationError');
+
+      const asBool = { ...testPlaceData, pricePerNight: true };
+      const rBool = await models.Place.create({ ...asBool, hostId: host.id }).catch(getErr);
+      expect(rBool).to.be.an('Error');
+      expect(rBool.name).to.equal('SequelizeValidationError');
+
+      const asNaN = { ...testPlaceData, pricePerNight: NaN };
+      const rNaN = await models.Place.create({ ...asNaN, hostId: host.id }).catch(getErr);
+      expect(rNaN).to.be.an('Error');
+      expect(rNaN.name).to.equal('SequelizeValidationError');
+
+      const asInf = { ...testPlaceData, pricePerNight: Infinity };
+      const rInf = await models.Place.create({ ...asInf, hostId: host.id }).catch(getErr);
+      expect(rInf).to.be.an('Error');
+      expect(rInf.name).to.equal('SequelizeValidationError');
+    });
+
+    it('can be a float string (!)', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloatStr = { ...testPlaceData, pricePerNight: '123.45' };
+      const r1 = await models.Place.create({ ...asFloatStr, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNight).to.equal(123.45);
+    });
+
+    it('can be an integer string (!)', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloatStr = { ...testPlaceData, pricePerNight: '123' };
+      const r1 = await models.Place.create({ ...asFloatStr, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNight).to.equal(123);
+    });
+
+    it('must be >= 0', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asNeg = { ...testPlaceData, pricePerNight: -123 };
+      const r1 = await models.Place.create({ ...asNeg, hostId: host.id }).catch(getErr);
+      expect(r1).to.be.an('Error');
+      expect(r1.name).to.equal('SequelizeValidationError');
+    });
+
+    it('does not limit decimals', async () => {
+      const { models } = await init();
+      const host = await models.Host.create(testHostData, { include: 'User' });
+      const asFloat = { ...testPlaceData, pricePerNight: 123.456789 };
+      const r1 = await models.Place.create({ ...asFloat, hostId: host.id }).catch(getErr);
+      expect(r1).not.to.be.an('Error');
+      expect(r1.pricePerNight).to.equal(123.456789);
     });
   });
 
@@ -338,7 +410,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const { published, ...noPublished } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...noPublished, hostId: host.id }).catch((e) => e);
+      const place = await models.Place.create({ ...noPublished, hostId: host.id }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.published).to.be.false;
     });
@@ -347,7 +419,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, published: true };
-      const place = await models.Place.create(asBool).catch((e) => e);
+      const place = await models.Place.create(asBool).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.published).to.be.true;
@@ -357,7 +429,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, published: 1 };
-      const place = await models.Place.create(asBool).catch((e) => e);
+      const place = await models.Place.create(asBool).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.published).to.be.true;
@@ -367,7 +439,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, published: '1' };
-      const place = await models.Place.create(asBool).catch((e) => e);
+      const place = await models.Place.create(asBool).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.published).to.be.true;
@@ -377,7 +449,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, published: 'yes' };
-      const place = await models.Place.create(asBool).catch((e) => e);
+      const place = await models.Place.create(asBool).catch(getErr);
       expect(place).to.be.an('Error');
       expect(place.name).to.equal('SequelizeValidationError');
     });
@@ -386,7 +458,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, published: 123 };
-      const place = await models.Place.create(asBool).catch((e) => e);
+      const place = await models.Place.create(asBool).catch(getErr);
       expect(place).to.be.an('Error');
       expect(place.name).to.equal('SequelizeValidationError');
     });
@@ -398,7 +470,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const { maxGuests, ...noMaxGuests } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...noMaxGuests, hostId: host.id }).catch((e) => e);
+      const place = await models.Place.create({ ...noMaxGuests, hostId: host.id }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.maxGuests).to.be.null;
     });
@@ -407,7 +479,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asNumber = { ...testPlaceData, hostId: host.id, maxGuests: 12345 };
-      const place = await models.Place.create(asNumber).catch((e) => e);
+      const place = await models.Place.create(asNumber).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.maxGuests).to.equal(asNumber.maxGuests);
@@ -421,7 +493,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asNumber = { ...testPlaceData, hostId: host.id, maxGuests: '12345' };
-      const place = await models.Place.create(asNumber).catch((e) => e);
+      const place = await models.Place.create(asNumber).catch(getErr);
       expect(place).not.to.be.an('Error');
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.maxGuests).to.equal(Number(asNumber.maxGuests));
@@ -431,7 +503,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asBool = { ...testPlaceData, hostId: host.id, maxGuests: true };
-      const rBool = await models.Place.create(asBool).catch((e) => e);
+      const rBool = await models.Place.create(asBool).catch(getErr);
       expect(rBool).to.be.an('Error');
       expect(rBool.name).to.equal('SequelizeValidationError');
     });
@@ -440,12 +512,12 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asFloat = { ...testPlaceData, hostId: host.id, maxGuests: 2.5 };
-      const rFloat = await models.Place.create(asFloat).catch((e) => e);
+      const rFloat = await models.Place.create(asFloat).catch(getErr);
       expect(rFloat).to.be.an('Error');
       expect(rFloat.name).to.equal('SequelizeValidationError');
 
       const asInt = { ...testPlaceData, hostId: host.id, maxGuests: 3 };
-      const rInt = await models.Place.create(asInt).catch((e) => e);
+      const rInt = await models.Place.create(asInt).catch(getErr);
       expect(rInt).not.to.be.an('Error');
       expect(rInt.maxGuests).to.equal(asInt.maxGuests);
     });
@@ -454,12 +526,12 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asZero = { ...testPlaceData, hostId: host.id, maxGuests: 0 };
-      const rZero = await models.Place.create(asZero).catch((e) => e);
+      const rZero = await models.Place.create(asZero).catch(getErr);
       expect(rZero).to.be.an('Error');
       expect(rZero.name).to.equal('SequelizeValidationError');
 
       const asOne = { ...testPlaceData, hostId: host.id, maxGuests: 1 };
-      const rOne = await models.Place.create(asOne).catch((e) => e);
+      const rOne = await models.Place.create(asOne).catch(getErr);
       expect(rOne).not.to.be.an('Error');
       expect(rOne.maxGuests).to.equal(asOne.maxGuests);
     });
@@ -471,7 +543,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const { country, ...noCountry } = testPlaceData; // eslint-disable-line no-unused-vars
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...noCountry, hostId: host.id }).catch((e) => e);
+      const place = await models.Place.create({ ...noCountry, hostId: host.id }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.country).to.be.null;
     });
@@ -479,7 +551,7 @@ describe(d('Place Model'), () => {
     it('allows valid country ISO3166-1 alpha-2', async () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
-      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, country: 'PT' }).catch((e) => e);
+      const place = await models.Place.create({ ...testPlaceData, hostId: host.id, country: 'PT' }).catch(getErr);
       expect(place.id).to.be.a('number').greaterThan(0);
       expect(place.country).to.equal('PT');
     });
@@ -488,7 +560,7 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asLower = { ...testPlaceData, hostId: host.id, country: 'pt' };
-      const rLower = await models.Place.create(asLower).catch((e) => e);
+      const rLower = await models.Place.create(asLower).catch(getErr);
       expect(rLower).not.to.be.an('Error');
       expect(rLower.country).to.equal('pt');
     });
@@ -497,17 +569,17 @@ describe(d('Place Model'), () => {
       const { models } = await init();
       const host = await models.Host.create(testHostData, { include: 'User' });
       const asXa = { ...testPlaceData, hostId: host.id, country: 'XA' };
-      const rXa = await models.Place.create(asXa).catch((e) => e);
+      const rXa = await models.Place.create(asXa).catch(getErr);
       expect(rXa).to.be.an('Error');
       expect(rXa.name).to.equal('SequelizeValidationError');
 
       const asPrt = { ...testPlaceData, hostId: host.id, country: 'PRT' };
-      const rPrt = await models.Place.create(asPrt).catch((e) => e);
+      const rPrt = await models.Place.create(asPrt).catch(getErr);
       expect(rPrt).to.be.an('Error');
       expect(rPrt.name).to.equal('SequelizeValidationError');
 
       const asP = { ...testPlaceData, hostId: host.id, country: 'P' };
-      const rP = await models.Place.create(asP).catch((e) => e);
+      const rP = await models.Place.create(asP).catch(getErr);
       expect(rP).to.be.an('Error');
       expect(rP.name).to.equal('SequelizeValidationError');
     });

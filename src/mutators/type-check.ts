@@ -1,8 +1,6 @@
-import type { Mutator, TypeChecks, TypeChecker } from '../airtight';
+import type { Mutator, TypeChecks } from '../airtight';
 
-const isString: TypeChecker = (value) => String(value) === value;
-const isNumber: TypeChecker = (value) => typeof value === 'number';
-const isBool: TypeChecker = (value) => typeof value === 'boolean';
+import { isString, isNumber, isBool } from '../utils';
 
 const typeCheckers: TypeChecks = {
   string: isString,
