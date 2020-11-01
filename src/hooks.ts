@@ -1,6 +1,6 @@
 import type Airtight from './airtight';
 import { ValidationError, ValidationErrorItem } from 'sequelize';
-import { mutate, attrGet, attrSet } from './helpers';
+import { mutate, validate, attrGet, attrSet } from './helpers';
 import { getters, setters, validators } from './mutators';
 
 /**
@@ -43,18 +43,23 @@ export const afterDefine: Airtight.AfterDefine = (instance) => {
  * @param {ModelDefined} instance An instance of a model
  * @param {object} options
  */
-const beforeValidate: Airtight.BeforeValidate = (instance, options) => {
+const beforeValidate: Airtight.BeforeValidate = async (instance, options) => {
   const attrs: Airtight.ModelAttrs = instance.rawAttributes;
-  Object.entries(attrs).forEach(([attrName, attr]) => {
-    // Run only on changed fields
-    if (!instance.changed(attrName)) return;
 
+  const changed: string[] = instance.changed();
+  if (!Array.isArray(changed)) return;
+
+  const promises = changed.map(async (attrName) => {
+    const attr = attrs[attrName];
     const { vet = {} } = attr.airtight || {};
+
     try {
-      mutate(validators, vet, instance.getDataValue(attrName), instance, attrName, attr);
+      await validate(validators, vet, instance.getDataValue(attrName), instance, attrName, attr);
     } catch (e) {
       const error = new ValidationErrorItem(e.message);
       throw new ValidationError('Airtight Validation Failed', [error]);
     }
   });
+
+  return Promise.all(promises);
 };
