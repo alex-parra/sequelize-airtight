@@ -14,8 +14,8 @@ const typeCheckers: TypeChecks = {
  * eg: `isType: 'string|Date'`
  */
 export const isType: Mutator<boolean | string> = ({ value, options, attrName }) => {
-  if (value == null) return value; // skip null or undefined (use allowNull: false)
-  if (options === false) return value;
+  if (value == null) return; // skip null or undefined (use allowNull: false)
+  if (options === false) return;
   if (typeof options !== 'string') {
     throw TypeError('param of isType must be `false` or csv of types');
   }

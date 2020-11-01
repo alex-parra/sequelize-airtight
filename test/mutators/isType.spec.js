@@ -6,18 +6,18 @@ const { isType } = require('../../lib/mutators/type-check');
 describe(d('Validator: isType'), () => {
   const attrName = 'testing';
 
-  it('should return unchanged if value is `null` or `undefined`', async () => {
+  it('should not throw if value is `null` or `undefined`', async () => {
     const d = { options: 'string', attrName };
-    expect(isType({ ...d })).to.equal(undefined);
-    expect(isType({ ...d, value: undefined })).to.equal(undefined);
-    expect(isType({ ...d, value: null })).to.equal(null);
+    expect(() => isType({ ...d })).not.to.throw();
+    expect(() => isType({ ...d, value: undefined })).not.to.throw();
+    expect(() => isType({ ...d, value: null })).not.to.throw();
   });
 
-  it('should return unchanged if options is `false`', async () => {
+  it('should not throw if options is `false`', async () => {
     const d = { options: false, attrName };
-    expect(isType({ ...d, value: 'hello' })).to.equal('hello');
-    expect(isType({ ...d, value: 1 })).to.equal(1);
-    expect(isType({ ...d, value: false })).to.equal(false);
+    expect(() => isType({ ...d, value: 'hello' })).not.to.throw();
+    expect(() => isType({ ...d, value: 1 })).not.to.throw();
+    expect(() => isType({ ...d, value: false })).not.to.throw();
   });
 
   it('should fail if `options` is not `false` or a `string`', async () => {
